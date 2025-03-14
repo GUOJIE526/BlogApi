@@ -65,7 +65,12 @@ namespace BlogApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePosts(int id)
         {
-            return Ok(await _blogPosts.DeletePosts(id));
+            var result = await _blogPosts.DeletePosts(id);
+            if (result == false)
+            {
+                return BadRequest(new { message = "無此文章" });
+            }
+            return Ok(new { message = "文章已刪除" });
         }
 
         private bool PostsExists(int id)

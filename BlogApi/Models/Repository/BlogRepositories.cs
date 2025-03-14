@@ -18,7 +18,12 @@ namespace BlogApi.Models.Repository
         }
         public async Task<Posts> OnePosts(int id)
         {
-            return await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null)
+            {
+                return null;
+            }
+            return post;
         }
         public async Task<Posts> AddPosts(PostDTO postDTO)
         {
@@ -50,12 +55,12 @@ namespace BlogApi.Models.Repository
         }
         public async Task<bool> DeletePosts(int id)
         {
-            var posts = await _context.Posts.FindAsync(id);
-            if (posts == null)
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null)
             {
                 return false;
             }
-            _context.Posts.Remove(posts);
+            _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return true;
         }
